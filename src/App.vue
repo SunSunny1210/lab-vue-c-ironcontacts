@@ -1,28 +1,7 @@
 <script setup>
-import contactsInfo from "./contacts.json";
-import { ref } from "vue";
+import { useContactsStore } from "./stores/contacts";
 
-const contacts = ref(contactsInfo.slice(5, 10));
-
-const addRandomContact = () => {
-    const randomContact = contactsInfo[Math.floor(Math.random() * contactsInfo.length)];
-
-    if (!contacts.value.includes(randomContact)) {
-        contacts.value.push({...randomContact})
-    }
-}
-
-const sortByName = () => {
-    contacts.value.sort((a, b) => a.name.localeCompare(b.name));
-}
-
-const sortByPopularity = () => {
-    contacts.value.sort((a, b) => parseFloat(b.popularity) - parseFloat(a.popularity))
-}
-
-const deleteContact = (contactId) => {
-    contacts.value = contacts.value.filter(c => c.id !== contactId)
-}
+const store = useContactsStore()
 </script>
 
 
@@ -30,19 +9,22 @@ const deleteContact = (contactId) => {
     <div class="app">
         <h1>IronContacts</h1>
         <div class="btns">
-            <button @click="addRandomContact">Add Contact Button</button>
-            <button @click="sortByName">Sort by Name</button>
-            <button @click="sortByPopularity">Sort by Popularity</button>
+            <button @click="store.addRandomContact">Add Contact Button</button>
+            <button @click="store.toggleSortByName">Sort by Name</button>
+            <button @click="store.toggleSortByPopularity">Sort by Popularity</button>
         </div>
         <table>
-        <tr>
-            <td class="title">Picture</td>
-            <td class="title">Name</td>
-            <td class="title">Popularity</td>
-            <td class="title">Won an Oscar</td>
-            <td class="title">Won an Emmy</td>
+        <thead>
+            <tr>
+            <th class="title">Picture</th>
+            <th class="title">Name</th>
+            <th class="title">Popularity</th>
+            <th class="title">Won an Oscar</th>
+            <th class="title">Won an Emmy</th>
         </tr>
-        <tr class="contacts-list" v-for="(contact , i) in contacts" :key="i">
+        </thead>
+        <tbody>
+            <tr class="contacts-list" v-for="(contact , i) in store.sortedContacts" :key="i">
             <td>
                 <img :src="contact.pictureUrl" />
             </td>
@@ -50,8 +32,11 @@ const deleteContact = (contactId) => {
             <td>{{ parseFloat(contact.popularity).toFixed(2) }}</td>
             <td v-if="contact.wonOscar">🏆</td>
             <td v-if="contact.wonEmmy">🏆</td>
-            <button @click="deleteContact(contact.id)">Delete Contact</button>
+            <td>
+                <button @click="store.deleteContact(contact.id)">Delete Contact</button>
+            </td>
         </tr>
+        </tbody>
     </table>
     </div>
 </template>
@@ -79,7 +64,7 @@ const deleteContact = (contactId) => {
 
     .title {
         padding: 1rem;
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: bold;
         text-align: center;
     }
