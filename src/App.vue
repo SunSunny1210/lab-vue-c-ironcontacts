@@ -2,7 +2,7 @@
 import contactsInfo from "./contacts.json";
 import { ref } from "vue";
 
-const contacts = ref(contactsInfo.slice(0, 5));
+const contacts = ref(contactsInfo.slice(5, 10));
 </script>
 
 
@@ -14,6 +14,8 @@ const contacts = ref(contactsInfo.slice(0, 5));
             <td class="title">Picture</td>
             <td class="title">Name</td>
             <td class="title">Popularity</td>
+            <td class="title">Won an Oscar</td>
+            <td class="title">Won an Emmy</td>
         </tr>
         <tr v-for="(contact , i) in contacts" :key="i">
             <td>
@@ -21,6 +23,8 @@ const contacts = ref(contactsInfo.slice(0, 5));
             </td>
             <td>{{ contact.name }}</td>
             <td>{{ parseFloat(contact.popularity).toFixed(2) }}</td>
+            <td v-if="contact.wonOscar">🏆</td>
+            <td v-if="contact.wonEmmy">🏆</td>
         </tr>
     </table>
     </div>
