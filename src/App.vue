@@ -19,6 +19,10 @@ const sortByName = () => {
 const sortByPopularity = () => {
     contacts.value.sort((a, b) => parseFloat(b.popularity) - parseFloat(a.popularity))
 }
+
+const deleteContact = (contactId) => {
+    contacts.value = contacts.value.filter(c => c.id !== contactId)
+}
 </script>
 
 
@@ -46,6 +50,7 @@ const sortByPopularity = () => {
             <td>{{ parseFloat(contact.popularity).toFixed(2) }}</td>
             <td v-if="contact.wonOscar">🏆</td>
             <td v-if="contact.wonEmmy">🏆</td>
+            <button @click="deleteContact(contact.id)">Delete Contact</button>
         </tr>
     </table>
     </div>
