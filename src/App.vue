@@ -13,7 +13,11 @@ const addRandomContact = () => {
 }
 
 const sortByName = () => {
-    contacts
+    contacts.value.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+const sortByPopularity = () => {
+    contacts.value.sort((a, b) => parseFloat(b.popularity) - parseFloat(a.popularity))
 }
 </script>
 
