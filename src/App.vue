@@ -92,5 +92,17 @@ const deleteContact = (contactId) => {
     img {
     height: 10rem;
     }
+
+    .btns {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    button {
+        height: 40px;
+        width: 80px;
+    }
 }
 </style>
